@@ -1,0 +1,48 @@
+{% extends 'diary/base.html' %}
+{% block main_area %}
+     <h1>Diary</h1>
+    {% if user.is_authenticated %}
+        {% if user.is_superuser or user.is_staff %}
+            <a href="/diary/create_post">일기쓰기</a>
+        {% endif %}
+
+    {% endif %}
+
+
+     <h1>Diary {% if category %} postings with category {{ category }}
+     {% endif %}
+     {% if tag %} postings with tag {{ tag }}
+     {% endif %}
+
+     </h1>
+
+                {% for p in post_list %}
+                <!-- Blog Post -->
+                <div class="card mb-4">
+                    {% if p.head_image %}
+                        <img class="card-img-top" src="{{ p.head_image.url }}" alt="Card image cap">
+                    {% else %}
+                        <img class="card-img-top" src="/media/diary/images/2023/06/21/free-icon-giraffe-1801615.png">
+                    {% endif %}
+                    <div class="card-body">
+                        <h2 class="card-title">{{ p.title }} ({{ p.category }})</h2>
+                        <p class="card-text">{{ p.get_content_markdown | truncatewords:30 | safe }}</p>
+
+                        <a href="{{ p.get_absolute_url }}" class="btn btn-primary">Read More &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on {{ p.created_at }} by
+                        <a href="#">{{ p.author }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    <li class="page-item">
+                        <a class="page-link" href="#">&larr; Older</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+{% endblock %}

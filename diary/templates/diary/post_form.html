@@ -1,0 +1,19 @@
+{% extends 'diary/base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block main_area %}
+    <h1>다이어리 새 글 작성</h1>
+    <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+    <table>
+        {{ form | crispy }}
+    </table>
+    <button type="submit">글쓰기</button>
+    </form>
+    <p>Preview</p>
+    {{ form.media }}
+
+
+
+
+{% endblock %}
